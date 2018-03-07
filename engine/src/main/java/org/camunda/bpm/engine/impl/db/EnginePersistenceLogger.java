@@ -117,13 +117,15 @@ public class EnginePersistenceLogger extends ProcessEngineLogger {
   public ProcessEngineException flushDbOperationException(List<DbOperation> operationsToFlush, DbOperation operation,
       Throwable cause) {
 
-    return new ProcessEngineException(exceptionMessage(
+    String exceptionMessage = exceptionMessage(
       "004",
       "Exception while executing Database Operation '{}' with message '{}'. Flush summary: \n {}",
       operation.toString(),
       cause.getMessage(),
       buildStringFromList(operationsToFlush)
-    ), cause);
+    );
+
+    return new ProcessEngineException(exceptionMessage, cause);
   }
 
   public OptimisticLockingException concurrentUpdateDbEntityException(DbOperation operation) {
@@ -686,11 +688,13 @@ public class EnginePersistenceLogger extends ProcessEngineLogger {
       exCause = exCause.getCause();
     } while (exCause != null);
 
-    return new ProcessEngineException(exceptionMessage(
+    String exceptionMessage = exceptionMessage(
       "083",
       "Exception while executing Batch Database Operations with message '{}'. Flush summary: \n {}", message,
       buildStringFromList(operationsToFlush)
-    ), cause);
+    );
+
+    return new ProcessEngineException(exceptionMessage, cause);
   }
 
   public ProcessEngineException wrongBatchResultsSizeException(List<DbOperation> operationsToFlush) {

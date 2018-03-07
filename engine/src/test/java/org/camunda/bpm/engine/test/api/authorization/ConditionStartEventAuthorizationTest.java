@@ -26,18 +26,19 @@ import org.camunda.bpm.engine.AuthorizationException;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
-import org.junit.Test;
 
 public class ConditionStartEventAuthorizationTest extends AuthorizationTest {
 
   private static final String SINGLE_CONDITIONAL_XML = "org/camunda/bpm/engine/test/bpmn/event/conditional/ConditionalStartEventTest.testSingleConditionalStartEvent1.bpmn20.xml";
+  private static final String TRUE_CONDITIONAL_XML = "org/camunda/bpm/engine/test/bpmn/event/conditional/ConditionalStartEventTest.testStartInstanceWithTrueConditionalStartEvent.bpmn20.xml";
   protected static final String PROCESS_KEY = "conditionalEventProcess";
+  protected static final String PROCESS_KEY_TWO = "trueConditionProcess";
 
-  @Test
-  @Deployment(resources = { SINGLE_CONDITIONAL_XML })
+  @Deployment(resources = { SINGLE_CONDITIONAL_XML, TRUE_CONDITIONAL_XML })
   public void testWithAllPermissions() {
-    // given deployed process with conditional start event
+    // given two deployed processes with conditional start event
 
+    createGrantAuthorization(PROCESS_DEFINITION, PROCESS_KEY_TWO, userId, CREATE_INSTANCE);
     createGrantAuthorization(PROCESS_DEFINITION, PROCESS_KEY, userId, READ, CREATE_INSTANCE);
     createGrantAuthorization(PROCESS_INSTANCE, ANY, userId, CREATE);
 
@@ -51,7 +52,6 @@ public class ConditionStartEventAuthorizationTest extends AuthorizationTest {
     assertEquals(1, instances.size());
   }
 
-  @Test
   @Deployment(resources = { SINGLE_CONDITIONAL_XML })
   public void testWithoutProcessDefinitionPermissions() {
     // given deployed process with conditional start event
@@ -72,7 +72,6 @@ public class ConditionStartEventAuthorizationTest extends AuthorizationTest {
 
   }
 
-  @Test
   @Deployment(resources = { SINGLE_CONDITIONAL_XML })
   public void testWithoutCreateInstancePermissions() {
     // given deployed process with conditional start event
@@ -94,7 +93,6 @@ public class ConditionStartEventAuthorizationTest extends AuthorizationTest {
 
   }
 
-  @Test
   @Deployment(resources = { SINGLE_CONDITIONAL_XML })
   public void testWithoutProcessInstanccePermission() {
     // given deployed process with conditional start event
@@ -113,5 +111,25 @@ public class ConditionStartEventAuthorizationTest extends AuthorizationTest {
       assertTrue(e.getMessage().contains("The user with id 'test' does not have 'CREATE' permission on resource 'ProcessInstance'."));
     }
 
+  }
+
+  @Deployment(resources = { SINGLE_CONDITIONAL_XML })
+  public void testWithRevokeAuthorizations() {
+    // given deployed process with conditional start event
+
+    createRevokeAuthorization(PROCESS_DEFINITION, PROCESS_KEY, userId, READ);
+    createGrantAuthorization(PROCESS_DEFINITION, PROCESS_KEY, userId, CREATE_INSTANCE);
+    createGrantAuthorization(PROCESS_INSTANCE, ANY, userId, CREATE);
+
+    // when
+    try {
+      runtimeService
+          .createConditionEvaluation()
+          .setVariable("foo", 42)
+          .evaluateStartConditions();
+      fail("expected exception");
+    } catch (ProcessEngineException e) {
+      assertTrue(e.getMessage().contains("No subscriptions were found during evaluation of the conditional start events."));
+    }
   }
 }

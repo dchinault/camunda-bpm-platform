@@ -17,10 +17,14 @@ package org.camunda.bpm.engine.impl.persistence.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.core.variable.mapping.value.ParameterValueProvider;
 import org.camunda.bpm.engine.impl.db.DbEntity;
+import org.camunda.bpm.engine.impl.db.HasDbReferences;
 import org.camunda.bpm.engine.impl.db.HasDbRevision;
 import org.camunda.bpm.engine.impl.el.Expression;
 import org.camunda.bpm.engine.impl.event.EventHandler;
@@ -36,7 +40,7 @@ import static org.camunda.bpm.engine.impl.util.EnsureUtil.ensureNotNull;
 /**
  * @author Daniel Meyer
  */
-public class EventSubscriptionEntity implements EventSubscription, DbEntity, HasDbRevision, Serializable {
+public class EventSubscriptionEntity implements EventSubscription, DbEntity, HasDbRevision, HasDbReferences, Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -342,6 +346,23 @@ public class EventSubscriptionEntity implements EventSubscription, DbEntity, Has
   }
 
   @Override
+  public Set<String> getReferencedEntityIds() {
+    Set<String> referencedEntityIds = new HashSet<String>();
+    return referencedEntityIds;
+  }
+
+  @Override
+  public Map<String, Class> getReferencedEntitiesIdAndClass() {
+    Map<String, Class> referenceIdAndClass = new HashMap<String, Class>();
+
+    if (executionId != null) {
+      referenceIdAndClass.put(executionId, ExecutionEntity.class);
+    }
+
+    return referenceIdAndClass;
+  }
+
+  @Override
   public String toString() {
     return this.getClass().getSimpleName()
            + "[id=" + id
@@ -356,5 +377,4 @@ public class EventSubscriptionEntity implements EventSubscription, DbEntity, Has
            + ", created=" + created
            + "]";
   }
-
 }

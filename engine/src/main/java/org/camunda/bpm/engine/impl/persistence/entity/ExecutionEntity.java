@@ -209,7 +209,7 @@ public class ExecutionEntity extends PvmExecutionImpl implements Execution, Proc
    * persisted reference to the super execution of this execution
    *
    * @See {@link #getSuperExecution()}
-   * @see #setSuperExecution(ExecutionEntity)
+   * @see <code>setSuperExecution(ExecutionEntity)</code>
    */
   protected String superExecutionId;
 
@@ -217,7 +217,7 @@ public class ExecutionEntity extends PvmExecutionImpl implements Execution, Proc
    * persisted reference to the super case execution of this execution
    *
    * @See {@link #getSuperCaseExecution()}
-   * @see #setSuperCaseExecution(ExecutionEntity)
+   * @see <code>setSuperCaseExecution(ExecutionEntity)</code>
    */
   protected String superCaseExecutionId;
 
@@ -533,11 +533,11 @@ public class ExecutionEntity extends PvmExecutionImpl implements Execution, Proc
       observer.onClear(this);
     }
 
-    // delete all the variable instances
-    removeVariablesLocalInternal();
-
     // delete all the tasks and external tasks
     removeAllTasks();
+
+    // delete all the variable instances
+    removeVariablesLocalInternal();
 
     // remove all jobs
     removeJobs();
@@ -1851,6 +1851,26 @@ public class ExecutionEntity extends PvmExecutionImpl implements Execution, Proc
     }
 
     return referenceIds;
+  }
+
+  @Override
+  public Map<String, Class> getReferencedEntitiesIdAndClass() {
+    Map<String, Class> referenceIdAndClass = new HashMap<String, Class>();
+
+    if (superExecutionId != null) {
+      referenceIdAndClass.put(this.superExecutionId, ExecutionEntity.class);
+    }
+    if (parentId != null) {
+      referenceIdAndClass.put(this.parentId, ExecutionEntity.class);
+    }
+    if (processInstanceId != null) {
+      referenceIdAndClass.put(this.processInstanceId, ExecutionEntity.class);
+    }
+    if (processDefinitionId != null) {
+      referenceIdAndClass.put(this.processDefinitionId, ProcessDefinitionEntity.class);
+    }
+
+    return referenceIdAndClass;
   }
 
   public int getSuspensionState() {

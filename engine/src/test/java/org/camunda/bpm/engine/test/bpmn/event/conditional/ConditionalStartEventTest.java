@@ -133,6 +133,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   @Deployment(resources = "org/camunda/bpm/engine/test/bpmn/event/conditional/ConditionalStartEventTest.testSingleConditionalStartEvent.bpmn20.xml")
   public void testEventSubscriptionAfterDeleteLatestProcessVersion() {
     // given a deployed process
@@ -155,6 +156,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   @Deployment(resources = "org/camunda/bpm/engine/test/bpmn/event/conditional/ConditionalStartEventTest.testSingleConditionalStartEvent.bpmn20.xml")
   public void testStartInstanceAfterDeleteLatestProcessVersion() {
     // given a deployed process
@@ -178,6 +180,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testVersionWithoutConditionAfterDeleteLatestProcessVersionWithCondition() {
     // given a process
     testRule.deploy(MODEL_WITHOUT_CONDITION);
@@ -200,6 +203,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testSubscriptionsWhenDeletingProcessDefinitionsInOneTransactionByKeys() {
     // given three versions of the process
     testRule.deploy(SINGLE_CONDITIONAL_XML);
@@ -216,6 +220,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testSubscriptionsWhenDeletingProcessDefinitionsInOneTransactionByIdOrdered() {
     // given
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -232,6 +237,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testSubscriptionsWhenDeletingProcessDefinitionsInOneTransactionByIdReverseOrder() {
     // given
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -248,6 +254,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testMixedSubscriptionsWhenDeletingProcessDefinitionsInOneTransactionById1() {
     // given first version without condition
     String definitionId1 = deployModel(MODEL_WITHOUT_CONDITION);
@@ -264,6 +271,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testMixedSubscriptionsWhenDeletingProcessDefinitionsInOneTransactionById2() {
     // given second version without condition
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -280,6 +288,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testMixedSubscriptionsWhenDeletingProcessDefinitionsInOneTransactionById3() {
     // given third version without condition
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -296,6 +305,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testMixedSubscriptionsWhenDeletingTwoProcessDefinitionsInOneTransaction1() {
     // given first version without condition
     String definitionId1 = deployModel(MODEL_WITHOUT_CONDITION);
@@ -313,6 +323,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testMixedSubscriptionsWhenDeletingTwoProcessDefinitionsInOneTransaction2() {
     // given second version without condition
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -330,6 +341,7 @@ public class ConditionalStartEventTest {
   }
 
   @Test
+  @Ignore("CAM-8666")
   public void testMixedSubscriptionsWhenDeletingTwoProcessDefinitionsInOneTransaction3() {
     // given third version without condition
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -352,6 +364,7 @@ public class ConditionalStartEventTest {
   @Test
   @Ignore("CAM-8666")
   public void testDeleteNotLatestVersion() {
+    @SuppressWarnings("unused")
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);
     String definitionId2 = deployProcess(SINGLE_CONDITIONAL_XML);
     String definitionId3 = deployProcess(SINGLE_CONDITIONAL_XML);
@@ -370,6 +383,7 @@ public class ConditionalStartEventTest {
    * Tests the case when the previous of the previous version will be needed.
    */
   @Test
+  @Ignore("CAM-8666")
   public void testSubscribePreviousPreviousVersion() {
 
     String definitionId1 = deployProcess(SINGLE_CONDITIONAL_XML);

@@ -809,6 +809,23 @@ public class CaseExecutionEntity extends CmmnExecution implements CaseExecution,
     return referenceIds;
   }
 
+  @Override
+  public Map<String, Class> getReferencedEntitiesIdAndClass() {
+    Map<String, Class> referenceIdAndClass = new HashMap<String, Class>();
+
+    if (parentId != null) {
+      referenceIdAndClass.put(parentId, CaseExecutionEntity.class);
+    }
+    if (superCaseExecutionId != null) {
+      referenceIdAndClass.put(superCaseExecutionId, CaseExecutionEntity.class);
+    }
+    if (caseDefinitionId != null) {
+      referenceIdAndClass.put(caseDefinitionId, CmmnCaseDefinition.class);
+    }
+
+    return referenceIdAndClass;
+  }
+
   public Object getPersistentState() {
     Map<String, Object> persistentState = new HashMap<String, Object>();
     persistentState.put("caseDefinitionId", caseDefinitionId);
